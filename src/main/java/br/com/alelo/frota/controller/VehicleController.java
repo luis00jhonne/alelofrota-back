@@ -1,7 +1,11 @@
 package br.com.alelo.frota.controller;
 
 import br.com.alelo.frota.entity.Vehicle;
+import br.com.alelo.frota.exceptions.VehicleNotFoundException;
 import br.com.alelo.frota.service.VehicleService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +31,20 @@ public class VehicleController {
         return this.vehicleService.findAll();
     }
 
-    @GetMapping
+    /*@GetMapping()
     public List<Vehicle> listByFilter(@RequestParam Object filter) {
-        return this.vehicleService.findAll();
-    }
+        return this.vehicleService.findByStatus((Boolean) filter);
+    }*/
 
+    @ApiOperation(value = "Busca um veículo específico")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Retorna o veículo especificado pelo id"),
+            @ApiResponse(code = 404, message = "Veículo não encontrado."),
+            @ApiResponse(code = 500, message = "Houve uma exceção no sistema."), })
     @GetMapping(path = "/{id}")
-    public List<Vehicle> listById(@PathVariable Long id) {
-        return this.vehicleService.findAll();
+    public ResponseEntity<Vehicle> listById(@PathVariable Long id) {
+
+        return ResponseEntity.ok().body(this.vehicleService.findById(id));
+
     }
 
     @PostMapping
