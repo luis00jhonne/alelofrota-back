@@ -152,7 +152,7 @@ public class VehicleController {
 		}
 		
 		Vehicle vehicleToFind = vehicleService.findById(id);
-		if (vehicleToFind.getPlate().compareTo(dto.getPlate()) != 0) {
+		if (vehicleToFind.getPlate().equals(dto.getPlate()) ) {
 			throw new VehicleInvalidUpdateException("You don't have permission to change the plate=" + dto.getPlate());
 		}
 
