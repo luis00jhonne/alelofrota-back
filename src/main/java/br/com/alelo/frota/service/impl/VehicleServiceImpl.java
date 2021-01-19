@@ -1,7 +1,7 @@
 package br.com.alelo.frota.service.impl;
 
-import br.com.alelo.frota.entity.Vehicle;
 import br.com.alelo.frota.exceptions.VehicleNotFoundException;
+import br.com.alelo.frota.model.Vehicle;
 import br.com.alelo.frota.repository.VehicleRepository;
 import br.com.alelo.frota.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +22,7 @@ public class VehicleServiceImpl implements VehicleService {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public List<Vehicle> findAll(int page, int limit, Boolean filter){
+    public Page<Vehicle> findAll(int page, int limit, Boolean filter){
         Pageable paging = PageRequest.of(page, limit);
         Page<Vehicle> pageResult;
 
@@ -34,11 +32,7 @@ public class VehicleServiceImpl implements VehicleService {
             pageResult = vehicleRepository.findByStatus(filter, paging);
         }
 
-        if (pageResult.hasContent()){
-            return pageResult.getContent();
-        } else {
-            return new ArrayList<>();
-        }
+        return pageResult;
     }
 
     public Vehicle findById(Long id) throws VehicleNotFoundException {
@@ -48,7 +42,6 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Optional<Vehicle> findByPlate(String plate){
-        //remover campos especiais
         return vehicleRepository.findOneByPlate(plate);
     }
 

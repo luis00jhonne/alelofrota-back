@@ -12,7 +12,7 @@ public class FrotaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FrotaApplication.class, args);
-		log.info("API started successfully at {}", LocalDateTime.now());
+		log.info("Vehicle API started successfully at {}", LocalDateTime.now());
 	}
 
 }
