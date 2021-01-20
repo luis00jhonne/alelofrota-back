@@ -69,6 +69,9 @@ public class VehicleController {
 		}
 		
 		response.setData(itemsDTO);
+		response.setPage(listVehicles.getPageable());
+		response.setTotalPages(listVehicles.getTotalPages());
+		response.setTotalElements(listVehicles.getTotalElements());
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
     }
