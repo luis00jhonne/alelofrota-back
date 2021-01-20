@@ -77,16 +77,6 @@ public class VehicleApiIntegrationTest {
 	}
 
 	@Test
-	@Order(4)
-	public void testFindVehicleById() {
-
-		ResponseEntity<String> responseEntity = this.restTemplate.exchange(
-				"http://localhost:" + port + "/api-alelo/vehicle/20", HttpMethod.GET, null, String.class);
-
-		assertEquals(200, responseEntity.getStatusCodeValue());
-	}
-
-	@Test
 	@Order(5) 
 	public void testFindVehicleByIdThatNotExists() {
 	  
@@ -96,21 +86,6 @@ public class VehicleApiIntegrationTest {
 	  
 	  //Transaction not found 
 	  assertEquals(404, responseEntity.getStatusCodeValue()); 
-	}
-	
-	@Test
-	@Order(6)
-	public void testUpdateVehicleWithId10() {
-
-		VehicleDTO dto = new VehicleDTO(10L, "AAA-1234", "Gol", "Volkswagen", "Black", Boolean.TRUE);
-
-		// Create a new HttpEntity
-		final HttpEntity<VehicleDTO> entity = new HttpEntity<>(dto);
-
-		ResponseEntity<String> responseEntity = this.restTemplate
-				.exchange("http://localhost:" + port + "/api-alelo/vehicle/10", HttpMethod.PUT, entity, String.class);
-
-		assertEquals(200, responseEntity.getStatusCodeValue());
 	}
 	
 	@Test

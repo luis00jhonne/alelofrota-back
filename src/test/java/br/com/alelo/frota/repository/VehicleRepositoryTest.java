@@ -46,7 +46,7 @@ public class VehicleRepositoryTest {
 	@Order(1)
 	public void testSaveVehicle() {
 		
-		Vehicle vehicle = new Vehicle(null, PLATE_NUMBER, "Jetta", "Volkswagen", "Blue", Boolean.TRUE);
+		Vehicle vehicle = new Vehicle(null, "BBB-1234", "Jetta", "Volkswagen", "Blue", Boolean.TRUE);
 		
 		Vehicle response = repository.save(vehicle);
 		assertNotNull(response);

@@ -141,7 +141,7 @@ mvn integration-test
 Para executar a API, simplesmente execute o jar:
 
 ```bash
-java -jar frota-1.0.0-SNAPSHOT.jar
+java -jar frota-1.0.0.jar
 ```
     
 or
