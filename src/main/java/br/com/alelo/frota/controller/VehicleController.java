@@ -32,7 +32,7 @@ import java.util.Optional;
 
 @Log4j2
 @RestController
-@RequestMapping("/vehicle")
+@RequestMapping("/api-alelo/vehicle")
 public class VehicleController {
     
 	private VehicleService vehicleService;
