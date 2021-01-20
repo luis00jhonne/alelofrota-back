@@ -22,17 +22,23 @@ public class VehicleServiceImpl implements VehicleService {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public Page<Vehicle> findAll(int page, int limit, Boolean filter){
+    public Page<Vehicle> findAll(int page, int limit, String filter){
         Pageable paging = PageRequest.of(page, limit);
         Page<Vehicle> pageResult;
 
-        if (filter == null){
-            pageResult = vehicleRepository.findAll(paging);
-        } else {
-            pageResult = vehicleRepository.findByStatus(filter, paging);
-        }
+        if (filter != null){
+        	if (filter.toLowerCase().equals("true") || filter.toLowerCase().equals("false")) {
+        		Boolean status = filter.toLowerCase().equals("true") ? Boolean.TRUE : Boolean.FALSE;
+        		pageResult = vehicleRepository.findByStatus(status, paging);
+        	} else {
+        		String plate = String.join("-", filter.substring(0,  3), filter.substring(3));
+            	pageResult = vehicleRepository.findByPlate(plate, PageRequest.of(0, 1));
+        	}
+       } else {
+        	pageResult = vehicleRepository.findAll(paging);
+       }
 
-        return pageResult;
+       return pageResult;
     }
 
     public Vehicle findById(Long id) throws VehicleNotFoundException {

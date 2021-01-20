@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.alelo</groupId>
 	<artifactId>frota</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>frota</name>
 	<description>Fullstack Test - Alelo Frota 2020</description>
 

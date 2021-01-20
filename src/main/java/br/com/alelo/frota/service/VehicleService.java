@@ -9,7 +9,7 @@ public interface VehicleService {
 
     Vehicle save(Vehicle vehicle);
     void deleteById(Long id);
-    Page<Vehicle> findAll(int page, int limit, Boolean filter);
+    Page<Vehicle> findAll(int page, int limit, String filter);
     Optional<Vehicle> findByPlate(String plate);
     Vehicle findById(Long id) throws VehicleNotFoundException;
 

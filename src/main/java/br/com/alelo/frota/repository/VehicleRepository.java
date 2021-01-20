@@ -14,7 +14,8 @@ import java.util.Optional;
 @RepositoryRestResource(exported = false)
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
-    Optional<Vehicle> findOneByPlate(String plate);
+    Page<Vehicle> findByPlate(String plate, Pageable pageable);
     Page<Vehicle> findByStatus(Boolean status, Pageable pageable);
+    Optional<Vehicle> findOneByPlate(String plate);
 
 }

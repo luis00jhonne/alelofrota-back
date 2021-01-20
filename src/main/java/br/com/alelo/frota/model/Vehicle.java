@@ -9,7 +9,6 @@ import lombok.Setter;
 import java.io.Serializable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 
 import br.com.alelo.frota.dto.model.VehicleDTO;

@@ -47,44 +47,30 @@ public class VehicleController {
             @ApiResponse(code = 500, message = "Houve uma exceção no sistema."), })
     @GetMapping
     public ResponseEntity<Response<List<VehicleDTO>>> listAll(
-            @RequestParam(required = false) Boolean filter,
+            @RequestParam(required = false) String filter,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit) throws VehicleNotFoundException {
     	
     	Response<List<VehicleDTO>> response = new Response<>();
     	
-    	Page<Vehicle> travels = vehicleService.findAll(page, limit, filter);
-		
-		if (travels.isEmpty()) {
-			throw new VehicleNotFoundException("There are no vehicles registered");
-		}
+    	Page<Vehicle> listVehicles = vehicleService.findAll(page, limit, filter);
 		
 		List<VehicleDTO> itemsDTO = new ArrayList<>();
-		travels.stream().forEach(t -> itemsDTO.add(t.convertEntityToDTO()));
-		
-		itemsDTO.stream().forEach(dto -> {
-			try {
-				createSelfLinkInCollections(dto);
-			} catch (VehicleNotFoundException e) {
-				log.error("There are no vehicles registered");
-			}
-		});
+		if (listVehicles.hasContent()) {
+			listVehicles.stream().forEach(t -> itemsDTO.add(t.convertEntityToDTO()));
+			itemsDTO.stream().forEach(dto -> {
+				try {
+					createSelfLinkInCollections(dto);
+				} catch (VehicleNotFoundException e) {
+					log.error("There are no vehicles registered");
+				}
+			});
+		}
 		
 		response.setData(itemsDTO);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @ApiOperation(value = "Buscar Veículo pela Placa")
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Retorna a lista de veículos"),
-            @ApiResponse(code = 500, message = "Houve uma exceção no sistema."), })
-    @GetMapping(path = "/filter")
-    public ResponseEntity<?> listByPlate(
-            @RequestParam(required = false) String filter) {
-
-        return ResponseEntity.ok(this.vehicleService.findByPlate(filter));
-    }
-
 
     @ApiOperation(value = "Busca um veículo específico pelo Id")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Retorna o veículo especificado pelo id"),
@@ -140,6 +126,7 @@ public class VehicleController {
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Veículo atualizado com sucesso"),
             @ApiResponse(code = 400, message = "Requisição incorreta."),
             @ApiResponse(code = 404, message = "Veículo não encontrado."),
+            @ApiResponse(code = 409, message = "Tentativa de atualização inválida."),
             @ApiResponse(code = 500, message = "Houve uma exceção no sistema."), })
     @PutMapping(path="/{id}")
     public ResponseEntity<Response<VehicleDTO>> updateVehicle(@PathVariable("id") Long id, @Valid @RequestBody VehicleDTO dto, BindingResult result) throws VehicleNotFoundException, VehicleInvalidUpdateException{
@@ -152,7 +139,11 @@ public class VehicleController {
 		}
 		
 		Vehicle vehicleToFind = vehicleService.findById(id);
-		if (vehicleToFind.getPlate().equals(dto.getPlate()) ) {
+		if (!vehicleToFind.getId().equals(dto.getId()) ) {
+			throw new VehicleInvalidUpdateException("You don't have permission to change the vehicle id=" + dto.getId());
+		}
+		
+		if (!vehicleToFind.getPlate().equals(dto.getPlate()) ) {
 			throw new VehicleInvalidUpdateException("You don't have permission to change the plate=" + dto.getPlate());
 		}
 

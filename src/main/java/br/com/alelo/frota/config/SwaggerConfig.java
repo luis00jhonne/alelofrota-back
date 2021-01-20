@@ -34,7 +34,6 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .title("Alelo Frota")
                 .description("Documentação Fullstack Test - Alelo Frota 2020")
                 .version("1.0")
-                .licenseUrl("https://github.com/luis00jhonne/alelofrota-back")
                 .build();
     }
 
