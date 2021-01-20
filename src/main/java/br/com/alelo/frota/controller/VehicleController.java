@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Log4j2
+@CrossOrigin
 @RestController
 @RequestMapping("/api-alelo/vehicle")
 public class VehicleController {
